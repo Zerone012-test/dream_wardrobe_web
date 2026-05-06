@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>梦境衣橱 · 找到属于你的那件</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Mono:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0a14;--pale:#f5f0e8;--mist:#c8b8d4;--dream:#7b5ea7;
+  --blush:#d4a0b5;--gold:#c8a96e;--aqua:#7ec8c8;--void:#1a1025;
+  --glass:rgba(245,240,232,.05);
+  --serif:'Cormorant Garamond','Noto Serif SC',serif;
+  --mono:'Space Mono',monospace;--chinese:'Noto Serif SC',serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--void);color:var(--pale);font-family:var(--chinese);overflow-x:hidden;min-height:100vh;}
+
+.bg-cosmos{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%,rgba(123,94,167,.18) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 20%,rgba(126,200,200,.12) 0%,transparent 50%),
+    radial-gradient(ellipse 100% 80% at 50% 50%,rgba(212,160,181,.06) 0%,transparent 70%),
+    #0d0a14;}
+.bg-grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px;}
+.float-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(60px);animation:orb-drift 20s ease-in-out infinite;}
+.orb1{width:400px;height:400px;background:rgba(123,94,167,.15);top:-100px;right:-100px;}
+.orb2{width:300px;height:300px;background:rgba(212,160,181,.12);bottom:10%;left:-80px;animation-delay:-7s;}
+.orb3{width:250px;height:250px;background:rgba(126,200,200,.10);top:40%;right:5%;animation-delay:-13s;}
+@keyframes orb-drift{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(30px,-20px) scale(1.05);}66%{transform:translate(-20px,30px) scale(.95);}}
+@keyframes fade-in{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulse-down{0%,100%{transform:translateX(-50%) translateY(0);opacity:.3;}50%{transform:translateX(-50%) translateY(7px);opacity:.7;}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.9rem 2rem;
+  background:linear-gradient(180deg,rgba(13,10,20,.92) 0%,transparent 100%);
+  backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(200,184,212,.1);}
+.nav-logo{font-family:var(--serif);font-size:1.1rem;letter-spacing:.15em;color:var(--mist);cursor:pointer;}
+.nav-logo span{color:var(--blush);font-style:italic;}
+.nav-links{display:flex;gap:.4rem;flex-wrap:wrap;}
+.nav-btn{background:none;border:1px solid rgba(200,184,212,.18);color:rgba(245,240,232,.45);
+  padding:.4rem .85rem;border-radius:2px;cursor:pointer;font-family:var(--chinese);
+  font-size:.75rem;letter-spacing:.08em;transition:all .3s;white-space:nowrap;}
+.nav-btn:hover,.nav-btn.active{background:rgba(200,184,212,.14);color:var(--pale);border-color:var(--mist);}
+
+/* SECTIONS */
+.section{position:relative;z-index:2;min-height:100vh;padding:6rem 2rem 5rem;display:none;}
+.section.active{display:block;}
+#sec-hero{padding:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+
+.section-eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.3em;color:var(--blush);text-transform:uppercase;margin-bottom:.9rem;opacity:.8;}
+.section-title{font-family:var(--serif);font-size:clamp(2.4rem,5.5vw,5rem);font-weight:300;line-height:1.1;color:var(--pale);margin-bottom:.4rem;}
+.section-title em{color:var(--mist);font-style:italic;}
+.section-subtitle{font-size:.88rem;color:rgba(245,240,232,.45);letter-spacing:.05em;margin-bottom:2.5rem;max-width:55ch;}
+
+/* HERO */
+.hero-inner{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;position:relative;width:100%;}
+.hero-eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.4em;color:var(--blush);margin-bottom:2rem;animation:fade-in 1s ease;}
+.hero-title{font-family:var(--serif);font-size:clamp(3.5rem,11vw,9.5rem);font-weight:300;line-height:1;color:var(--pale);margin-bottom:.8rem;animation:fade-in 1s ease .2s both;}
+.hero-title .italic{font-style:italic;color:var(--mist);}
+.hero-title .gold{color:var(--gold);}
+.hero-sub{font-family:var(--serif);font-size:clamp(.9rem,1.8vw,1.15rem);font-style:italic;color:rgba(245,240,232,.5);max-width:42ch;margin:0 auto 2.5rem;animation:fade-in 1s ease .4s both;line-height:2.2;}
+.hero-btn{animation:fade-in 1s ease .6s both;font-size:.85rem;padding:1rem 3rem;}
+.hero-scroll{position:absolute;bottom:2rem;left:50%;font-family:var(--mono);font-size:.58rem;letter-spacing:.3em;color:rgba(200,184,212,.3);animation:pulse-down 2.2s ease-in-out infinite;transform:translateX(-50%);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(13,10,20,.85);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;padding:1.5rem;animation:fade-in .3s ease;}
+.modal-overlay.hidden{display:none;}
+.modal-box{width:100%;max-width:500px;background:linear-gradient(135deg,rgba(42,24,64,.96),rgba(26,16,37,.99));border:1px solid rgba(200,184,212,.2);border-radius:8px;padding:2.8rem;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+.modal-close{position:absolute;top:1rem;right:1.2rem;background:none;border:none;color:rgba(200,184,212,.4);font-size:1.3rem;cursor:pointer;transition:color .2s;line-height:1;}
+.modal-close:hover{color:var(--pale);}
+.modal-intro{font-family:var(--serif);font-size:1.1rem;font-weight:300;line-height:1.9;color:rgba(245,240,232,.8);margin-bottom:2rem;font-style:italic;}
+
+/* INPUTS */
+.input-label{font-size:.78rem;letter-spacing:.14em;color:var(--mist);margin-bottom:.55rem;display:block;}
+.dream-input{width:100%;background:rgba(13,10,20,.6);border:1px solid rgba(200,184,212,.22);border-radius:2px;color:var(--pale);font-family:var(--chinese);font-size:1rem;padding:.8rem 1rem;outline:none;transition:border-color .3s;margin-bottom:1.4rem;}
+.dream-input:focus{border-color:var(--mist);}
+.dream-input::placeholder{color:rgba(200,184,212,.3);}
+
+/* BUTTONS */
+.btn-dream{background:linear-gradient(135deg,rgba(123,94,167,.4),rgba(212,160,181,.3));border:1px solid var(--mist);color:var(--pale);padding:.85rem 2.2rem;border-radius:2px;cursor:pointer;font-family:var(--chinese);font-size:.88rem;letter-spacing:.15em;transition:all .35s ease;position:relative;overflow:hidden;display:inline-block;}
+.btn-dream::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,240,232,.1),transparent);opacity:0;transition:opacity .3s;}
+.btn-dream:hover::before{opacity:1;}
+.btn-dream:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(123,94,167,.3);}
+.btn-dream:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;}
+.btn-ghost{background:none;border:1px solid rgba(200,184,212,.2);color:rgba(245,240,232,.4);padding:.7rem 1.5rem;border-radius:2px;cursor:pointer;font-family:var(--chinese);font-size:.8rem;letter-spacing:.1em;transition:all .3s;}
+.btn-ghost:hover{color:var(--pale);border-color:var(--mist);}
+
+/* QUIZ */
+.quiz-wrap{max-width:740px;margin:0 auto;}
+.quiz-progress{margin-bottom:1.8rem;}
+.progress-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--mist);margin-bottom:.45rem;}
+.progress-bar{height:1px;background:rgba(200,184,212,.12);border-radius:1px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--dream),var(--blush));border-radius:1px;transition:width .5s ease;}
+.question-card{background:var(--glass);border:1px solid rgba(200,184,212,.12);border-radius:4px;padding:2.4rem;backdrop-filter:blur(18px);animation:fade-in .4s ease;}
+.question-num{font-family:var(--mono);font-size:.62rem;color:var(--blush);letter-spacing:.3em;margin-bottom:.9rem;}
+.question-text{font-family:var(--serif);font-size:1.3rem;font-weight:300;line-height:1.75;color:var(--pale);margin-bottom:1.8rem;}
+.options-grid{display:flex;flex-direction:column;gap:.65rem;}
+.option-btn{background:rgba(13,10,20,.4);border:1px solid rgba(200,184,212,.14);border-radius:3px;padding:.85rem 1.2rem;text-align:left;cursor:pointer;font-family:var(--chinese);font-size:.88rem;color:rgba(245,240,232,.65);transition:border-color .2s,background .2s,color .2s;display:flex;align-items:flex-start;gap:.9rem;}
+.option-btn .opt-letter{font-family:var(--mono);font-size:.68rem;color:var(--mist);min-width:1.1rem;padding-top:.14rem;flex-shrink:0;}
+.option-btn:hover{border-color:var(--mist);color:var(--pale);background:rgba(200,184,212,.07);}
+.option-btn.selected{border-color:var(--dream);background:rgba(123,94,167,.2);color:var(--pale);}
+.option-btn.selected .opt-letter{color:var(--blush);}
+.quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.8rem;}
+
+/* RESULT — two-column: text left, full garment right */
+.result-card{background:var(--glass);border:1px solid rgba(200,184,212,.15);border-radius:4px;backdrop-filter:blur(18px);animation:fade-in .6s ease;overflow:hidden;}
+.result-card-inner{display:grid;grid-template-columns:1fr 320px;min-height:580px;}
+.result-card-text{padding:2.8rem;display:flex;flex-direction:column;gap:.4rem;}
+.result-tag{display:inline-block;background:rgba(123,94,167,.25);border:1px solid var(--dream);border-radius:2px;padding:.3rem 1rem;font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--mist);margin-bottom:.4rem;}
+.result-type{font-family:var(--serif);font-size:1.9rem;font-weight:300;color:var(--pale);}
+.result-type em{color:var(--blush);font-style:italic;}
+.result-divider{height:1px;background:rgba(200,184,212,.14);margin:.8rem 0;}
+/* garment panel right — fills full card height, image 9:16 */
+.result-garment-panel{position:relative;overflow:hidden;background:rgba(13,10,20,.4);}
+.result-garment-panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block;transition:transform .6s ease;}
+.result-garment-panel:hover img{transform:scale(1.03);}
+.result-garment-panel-fallback{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;color:rgba(200,184,212,.28);}
+.result-garment-overlay{position:absolute;inset:0;background:linear-gradient(270deg,transparent 55%,rgba(13,10,20,.55) 100%);pointer-events:none;}
+.result-garment-label{position:absolute;bottom:1.2rem;left:1rem;right:1rem;}
+.result-garment-ring{position:absolute;top:1rem;right:1rem;width:48px;height:48px;border-radius:50%;background:conic-gradient(from 0deg,transparent 0%,rgba(200,184,212,.5) 20%,transparent 40%);animation:ring-spin 4s linear infinite;}
+@keyframes ring-spin{to{transform:rotate(360deg);}}
+
+/* dim badge */
+.dim-badge{display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;padding:.28rem .8rem;border-radius:2px;margin-top:.6rem;}
+.tag-info{background:rgba(200,120,80,.18);border:1px solid rgba(200,120,80,.45);color:#e8a080;}
+.tag-compare{background:rgba(180,120,200,.18);border:1px solid rgba(180,120,200,.45);color:#c890e0;}
+.tag-identity{background:rgba(100,160,200,.18);border:1px solid rgba(100,160,200,.45);color:#80c0e8;}
+.tag-lonely{background:rgba(80,180,160,.18);border:1px solid rgba(80,180,160,.45);color:#70d0b8;}
+
+/* AGENT BOXES */
+.agent-box{background:linear-gradient(135deg,rgba(123,94,167,.07),rgba(212,160,181,.04));border:1px solid rgba(200,184,212,.14);border-radius:4px;padding:1.8rem;position:relative;margin-top:1.6rem;}
+.agent-box::before{content:'✦';position:absolute;top:-.6rem;left:1.4rem;background:var(--void);padding:0 .5rem;color:var(--blush);font-size:.78rem;}
+.agent-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.24em;color:var(--mist);margin-bottom:.8rem;opacity:.65;}
+.agent-text{font-family:var(--serif);font-size:.96rem;font-style:italic;line-height:2.1;color:rgba(245,240,232,.72);}
+.agent-text.loading{color:rgba(200,184,212,.38);font-size:.85rem;}
+.dots::after{content:'...';animation:dots 1.5s infinite;}
+@keyframes dots{0%,100%{content:'.';}33%{content:'..';}66%{content:'...'}}
+
+/* DRAW */
+.draw-wrap{max-width:960px;margin:0 auto;}
+.draw-stage-row{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;min-height:480px;}
+.fan-hint{font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:rgba(200,184,212,.38);margin-bottom:.8rem;}
+.fan-stage{position:relative;width:100%;height:400px;display:flex;align-items:flex-end;justify-content:center;overflow:visible;}
+.fan-card{position:absolute;bottom:0;left:50%;width:92px;height:142px;border-radius:7px;transform-origin:center bottom;cursor:pointer;transition:transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s,filter .3s;will-change:transform;}
+.fan-card-inner{width:100%;height:100%;border-radius:7px;overflow:hidden;position:relative;background:linear-gradient(160deg,#2a1840,#1a1025);border:1px solid rgba(200,184,212,.25);box-shadow:0 6px 20px rgba(0,0,0,.55);}
+.fan-card-back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.fan-card-back-pattern{width:58%;height:72%;border:1px solid rgba(200,184,212,.18);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:1.4rem;color:rgba(200,184,212,.22);}
+.fan-card:hover .fan-card-inner{border-color:rgba(200,184,212,.6);}
+.fan-card.fated .fan-card-inner::after{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);width:9px;height:9px;border-radius:50%;background:radial-gradient(circle,#fff 0%,var(--blush) 50%,transparent 70%);box-shadow:0 0 14px 5px rgba(212,160,181,.75);animation:spark-pulse 1.4s ease-in-out infinite;}
+@keyframes spark-pulse{0%,100%{opacity:.5;transform:translateX(-50%) scale(.8);}50%{opacity:1;transform:translateX(-50%) scale(1.4);}}
+.fan-card.selected-preview{filter:brightness(1.6);z-index:20!important;}
+.fan-card.selected-preview .fan-card-inner{border-color:var(--mist);box-shadow:0 0 28px rgba(200,184,212,.5);}
+
+/* reveal col */
+.reveal-col{display:none;flex-direction:column;gap:1rem;animation:fade-in .5s ease;}
+.reveal-col.show{display:flex;}
+.reveal-card-wrap{width:100%;aspect-ratio:2/3;border-radius:8px;overflow:hidden;position:relative;border:1px solid rgba(200,184,212,.3);box-shadow:0 20px 56px rgba(0,0,0,.65),0 0 36px rgba(200,184,212,.18);}
+.reveal-card-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.reveal-card-back{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#2a1840,#1a1025);}
+.reveal-btns{display:flex;flex-direction:column;gap:.6rem;}
+
+/* flip reveal */
+.draw-result-wrap{display:none;animation:fade-in .6s ease;}
+.draw-result-wrap.show{display:grid;grid-template-columns:300px 1fr;gap:2.5rem;align-items:start;}
+.drawn-card-flip{perspective:1200px;}
+.drawn-card-flipper{position:relative;width:100%;aspect-ratio:2/3;transform-style:preserve-3d;transition:transform .9s cubic-bezier(.4,0,.2,1);border-radius:8px;}
+.drawn-card-flipper.flipped{transform:rotateY(180deg);}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:8px;overflow:hidden;border:1px solid rgba(200,184,212,.2);}
+.flip-back-face{background:linear-gradient(160deg,#2a1840,#1a1025);display:flex;align-items:center;justify-content:center;}
+.flip-back-face .fbf-inner{width:60%;height:65%;border:1px solid rgba(200,184,212,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:2rem;color:rgba(200,184,212,.2);}
+.flip-front-face{transform:rotateY(180deg);}
+.flip-front-face img{width:100%;height:100%;object-fit:cover;}
+.flip-front-placeholder{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;color:rgba(200,184,212,.3);}
+.flip-glow{display:none;}
+.flip-label{position:absolute;bottom:1rem;left:1rem;right:1rem;}
+.flip-label .fl-name{font-family:var(--serif);font-size:1.2rem;color:var(--pale);}
+.flip-label .fl-type{font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;color:var(--blush);}
+
+/* SUMMARY */
+.summary-wrap{max-width:1060px;margin:0 auto;}
+/* letter left 52%, cards right 48% — matches sketch proportions */
+.summary-main{display:grid;grid-template-columns:1.1fr 1fr;gap:3rem;align-items:start;}
+
+/* cards column: sticky so it stays visible while reading letter */
+.summary-card-col{position:sticky;top:5.5rem;}
+
+/* Cards scene: two 9:16 cards in normal flow, corner-only overlap */
+.summary-cards-scene{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  gap:0;
+  padding:0 4%;   /* breathing room for the tilt transforms */
+}
+
+.sum-card{
+  width:100%;
+  aspect-ratio:9/16;
+  border-radius:8px;
+  overflow:hidden;
+  position:relative;
+  flex-shrink:0;
+  border:1px solid rgba(200,184,212,.18);
+  box-shadow:0 16px 48px rgba(0,0,0,.55);
+}
+/* image fills card completely, no overlay, no mask */
+.sum-card img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+.sum-card-fallback{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.5rem;
+  background:linear-gradient(135deg,rgba(42,24,64,.8),rgba(26,16,37,.95));
+  color:rgba(200,184,212,.3);
+}
+.sum-card-glow{display:none;}   /* no gradient overlay */
+/* small label bar at bottom — minimal, no background blur */
+.sum-card-label{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:.6rem .8rem;
+  background:linear-gradient(transparent,rgba(13,10,20,.7));
+}
+.sum-card-label .scl-name{font-family:var(--serif);font-size:.9rem;color:var(--pale);}
+.sum-card-label .scl-sub{font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;margin-top:.1rem;opacity:.7;}
+
+/* distress card: top, tilted right like in sketch */
+.sum-card-distress{
+  transform:rotate(3deg);
+  z-index:1;
+  animation:scard-in .7s cubic-bezier(.16,1,.3,1) both;
+}
+/* heal card: below distress, tilted left, overlaps ONLY at corner (~12% pull-up) */
+.sum-card-heal{
+  transform:rotate(-3deg);
+  margin-top:-12%;
+  z-index:2;
+  animation:scard-in .7s cubic-bezier(.16,1,.3,1) .15s both;
+}
+@keyframes scard-in{from{opacity:0;transform:scale(.92) translateY(12px);}to{opacity:1;}}
+
+/* typewriter letter */
+.final-letter{background:linear-gradient(135deg,rgba(123,94,167,.07),rgba(212,160,181,.04));border:1px solid rgba(200,184,212,.18);border-radius:6px;padding:2.8rem;position:relative;overflow:hidden;}
+.final-letter::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--mist),transparent);}
+.letter-heading{font-family:var(--serif);font-size:1.4rem;font-style:italic;color:var(--mist);margin-bottom:1.4rem;}
+.letter-body{font-family:var(--serif);font-size:1.02rem;font-weight:300;line-height:2.3;color:rgba(245,240,232,.78);}
+.typewriter-cursor{display:inline-block;width:2px;height:1.1em;background:var(--blush);margin-left:2px;animation:cursor-blink .7s infinite;}
+@keyframes cursor-blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* locked */
+.locked-msg{text-align:center;padding:6rem 2rem;display:flex;flex-direction:column;align-items:center;gap:1.4rem;}
+.lock-icon{font-size:2.8rem;opacity:.28;}
+.lock-text{font-family:var(--serif);font-size:1.05rem;font-style:italic;color:rgba(245,240,232,.38);}
+
+/* toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:rgba(123,94,167,.92);border:1px solid var(--mist);border-radius:4px;padding:.65rem 1.4rem;font-size:.84rem;color:var(--pale);z-index:999;transition:transform .4s ease;backdrop-filter:blur(10px);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@media(max-width:900px){
+  .draw-stage-row{grid-template-columns:1fr;min-height:auto;}
+  .reveal-col{flex-direction:row;flex-wrap:wrap;}
+  .reveal-card-wrap{width:160px;flex-shrink:0;}
+  .draw-result-wrap.show{grid-template-columns:1fr;}
+  /* summary: stack vertically on tablet */
+  .summary-main{grid-template-columns:1fr;}
+  .summary-card-col{position:static;margin-top:2rem;}
+  .sum-card-distress{width:72%;}
+  .sum-card-heal{width:72%;}
+  /* result: stack on tablet */
+  .result-card-inner{grid-template-columns:1fr;min-height:auto;}
+  .result-garment-panel{aspect-ratio:9/16;position:relative;max-height:70vh;}
+  .result-garment-panel img{position:absolute;}
+}
+@media(max-width:768px){
+  nav{padding:.7rem 1rem;}
+  .nav-btn{padding:.3rem .55rem;font-size:.68rem;}
+  .section{padding:4.5rem 1rem 3rem;}
+  #sec-hero{padding:0;}
+  .result-card-text{padding:1.4rem;}
+  .fan-card{width:68px;height:104px;}
+  .fan-stage{height:320px;}
+}
+@media(max-width:420px){
+  .hero-title{font-size:3.2rem;}
+  .nav-links{gap:.2rem;}
+  .nav-btn{padding:.28rem .4rem;font-size:.64rem;}
+  .fan-card{width:54px;height:84px;}
+  .fan-stage{height:280px;}
+}
+</style>
+</head>
+<body>
+<div class="bg-cosmos"></div>
+<div class="bg-grain"></div>
+<div class="float-orb orb1"></div>
+<div class="float-orb orb2"></div>
+<div class="float-orb orb3"></div>
+
+<!-- ONBOARD MODAL -->
+<div class="modal-overlay hidden" id="onboard-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeOnboard()">✕</button>
+    <p class="modal-intro">情绪像衣服一样穿在身上。<br>有些困境越穿越重，但它是可以脱下的。<br>换一件，从现在开始。<br>先告诉我，该怎么叫你。</p>
+    <label class="input-label">你的名字<span style="color:var(--blush)"> *</span></label>
+    <input class="dream-input" id="user-name" type="text" placeholder="输入你的名字…" maxlength="20"/>
+    <button class="btn-dream" style="width:100%" onclick="startQuiz()">开始找 →</button>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-logo" onclick="goSection('hero')"><span>梦境</span>衣橱</div>
+  <div class="nav-links">
+    <button class="nav-btn active" id="nav-hero"    onclick="goSection('hero')">首页</button>
+    <button class="nav-btn"        id="nav-quiz"    onclick="goSection('quiz')">01 找到你需要什么</button>
+    <button class="nav-btn"        id="nav-draw"    onclick="goSection('draw')">02 找到那件衣服</button>
+    <button class="nav-btn"        id="nav-summary" onclick="goSection('summary')">03 它在等你</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div id="sec-hero" class="section active">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">DREAM WARDROBE · 找到属于你的那件</p>
+    <h1 class="hero-title"><span class="italic">梦境</span><br><span class="gold">衣橱</span></h1>
+    <p class="hero-sub">情绪像衣服一样穿在身上。<br>有些困境越穿越重，<br>但它是可以脱下的——<br>换一件，就是改变的开始。</p>
+    <button class="btn-dream hero-btn" onclick="openOnboard()">找到那件衣服 →</button>
+    <p class="hero-scroll">↓ SCROLL</p>
+  </div>
+</div>
+
+<!-- SECTION 01 -->
+<div id="sec-quiz" class="section">
+  <div class="quiz-wrap">
+    <p class="section-eyebrow">SECTION 01 · FIND WHAT YOU NEED</p>
+    <h2 class="section-title">找到<em>你需要什么</em></h2>
+    <p class="section-subtitle">凭直觉作答。没有对错，只有真实。</p>
+    <div id="quiz-step" style="display:none">
+      <div class="quiz-progress">
+        <p class="progress-label"><span id="q-current">1</span> / 15</p>
+        <div class="progress-bar"><div class="progress-fill" id="q-bar" style="width:6.66%"></div></div>
+      </div>
+      <div id="question-area"></div>
+    </div>
+    <div id="result-step" style="display:none"></div>
+    <div id="quiz-locked" class="locked-msg" style="display:none">
+      <span class="lock-icon">✦</span>
+      <p class="lock-text">请从首页开始</p>
+      <button class="btn-dream" onclick="goSection('hero')">回到首页 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 02 -->
+<div id="sec-draw" class="section">
+  <div class="draw-wrap">
+    <p class="section-eyebrow">SECTION 02 · FIND THAT GARMENT</p>
+    <h2 class="section-title">找到<em>那件衣服</em></h2>
+    <p class="section-subtitle">牌堆里有一张本就是你的。凭感觉翻开它。</p>
+    <div id="draw-content">
+      <div class="locked-msg">
+        <span class="lock-icon">✦</span>
+        <p class="lock-text">请先完成第一步</p>
+        <button class="btn-dream" onclick="goSection('hero')">前往首页 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION 03 -->
+<div id="sec-summary" class="section">
+  <div class="summary-wrap">
+    <p class="section-eyebrow">SECTION 03 · IT'S BEEN WAITING</p>
+    <h2 class="section-title">它<em>在等你</em></h2>
+    <p class="section-subtitle">找到了。有人想告诉你，为什么是这件。</p>
+    <div id="summary-content">
+      <div class="locked-msg">
+        <span class="lock-icon">✦</span>
+        <p class="lock-text">请先完成前两步</p>
+        <button class="btn-dream" onclick="goSection('hero')">从头开始 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════
+   DATA
+══════════════════════════════════════ */
+const QUESTIONS=[
+  {id:1, dim:'info',     text:'闲下来是否会不自觉刷短视频/资讯超1小时，刷完无收获仍不想停？',       opts:['几乎每天','偶尔（情绪差/空闲时）','很少，主动关掉','从不']},
+  {id:2, dim:'compare',  text:'刷社交软件看到同学晒上岸/offer/穿搭，是否会觉得自己普通、有落差？', opts:['每次都emo','偶尔羡慕','不往心里去','觉得自己生活很好']},
+  {id:3, dim:'identity', text:'夜深人静时，是否会迷茫、怀疑自己的价值？',                         opts:['经常，越想越内耗','偶尔（挫折/见别人优秀时）','很少，快速调整','从不']},
+  {id:4, dim:'lonely',   text:'手机好友多、线上热闹，是否找不到线下能谈心的人？',                 opts:['完全是','大部分时候是','不太是','完全不是']},
+  {id:5, dim:'info',     text:'被各类消息包围后，是否会头脑发沉、无法专注？',                     opts:['每天都这样','信息多/赶ddl时会','轻微烦躁不影响','毫无感觉']},
+  {id:6, dim:'compare',  text:'和同学相处，是否会不自觉比成绩/实习/穿搭，越比越emo？',            opts:['习惯性对比，越比越内耗','偶尔对比','刻意避开','从不对比']},
+  {id:7, dim:'identity', text:'看到别人备考/考证/搞副业，是否会害怕落后、不敢放松？',             opts:['长期焦虑','阶段性担忧','偶尔多想','从不担心']},
+  {id:8, dim:'lonely',   text:'独处时是否总抱手机，没消息会空虚焦虑？',                           opts:['是，手机不离手','有点，频繁看手机','能放下手机','完全不依赖']},
+  {id:9, dim:'info',     text:'是否经常同时忙多件事，最后身心俱疲、一事无成？',                   opts:['天天这样','经常这样','偶尔这样','从不这样']},
+  {id:10,dim:'compare',  text:'社交时是否会刻意迎合别人，不敢表达真实想法？',                     opts:['特别在意，刻意讨好','不熟悉的人面前会收敛','熟人面前放松','大胆表达']},
+  {id:11,dim:'identity', text:'是否总觉得自己没达到别人的期待，辜负他人？',                       opts:['经常内耗','时常不满自己','勉强接纳','完全接纳自己']},
+  {id:12,dim:'lonely',   text:'线上寒暄多，是否觉得无情感联结、内心孤单？',                       opts:['长期有这种感觉','偶尔觉得落寞','内心充实','不觉得孤独']},
+  {id:13,dim:'info',     text:'刷手机是否会被动接收无用信息，不会筛选？',                         opts:['完全被动','很少主动筛选','主动过滤','严格筛选']},
+  {id:14,dim:'compare',  text:'看到别人的审美/生活方式，是否会动摇、否定自己的喜好？',            opts:['经常怀疑','偶尔动摇','不受影响','自己喜欢就好']},
+  {id:15,dim:'identity', text:'是否会被潮流裹挟，不清楚自己真正想要什么？',                       opts:['完全被动迷茫','容易迷失','有自己节奏','很清楚自己想要什么']},
+];
+
+const DIM_NAMES={info:'信息过载',compare:'人际社交比较',identity:'身份焦虑',lonely:'数字孤独'};
+const DIM_TAG={info:'tag-info',compare:'tag-compare',identity:'tag-identity',lonely:'tag-lonely'};
+const DIM_COLOR={
+  info:     {fg:'#e8a080',bg:'rgba(200,120,80,.18)', border:'rgba(200,120,80,.45)'},
+  compare:  {fg:'#c890e0',bg:'rgba(180,120,200,.18)',border:'rgba(180,120,200,.45)'},
+  identity: {fg:'#80c0e8',bg:'rgba(100,160,200,.18)',border:'rgba(100,160,200,.45)'},
+  lonely:   {fg:'#70d0b8',bg:'rgba(80,180,160,.18)', border:'rgba(80,180,160,.45)'},
+};
+
+const REMEDIES={
+  info:    [{key:'digital',icon:'⌛',name:'数字断舍离',desc:'卸载冗余APP、关非必要推送'},
+            {key:'sensory',icon:'🌫',name:'感官放空',  desc:'放下手机静坐10分钟'},
+            {key:'focus',  icon:'⊙', name:'深度专注',  desc:'用番茄钟专注单一任务'}],
+  compare: [{key:'block',  icon:'◎', name:'屏蔽减负',  desc:'隐藏攀比性动态'},
+            {key:'accept', icon:'♡', name:'自我接纳',  desc:'肯定自身小进步'},
+            {key:'niche',  icon:'◈', name:'小众圈层',  desc:'加入同频社交圈'}],
+  identity:[{key:'goal',   icon:'⬡', name:'目标拆解',  desc:'大目标拆成每日小任务'},
+            {key:'unlabel',icon:'∞', name:'标签解绑',  desc:'摆脱"必须优秀"束缚'},
+            {key:'relax',  icon:'~', name:'松弛成长',  desc:'接纳不完美、慢慢探索'}],
+  lonely:  [{key:'offline',icon:'☽', name:'线下轻社交',desc:'约好友线下见面'},
+            {key:'alone',  icon:'◇', name:'独处治愈',  desc:'做喜欢的事，学会独处'},
+            {key:'simplify',icon:'✦',name:'精简社交',  desc:'清理无效好友、深耕真诚关系'}],
+};
+
+/* ── 人格原型 [英文代号, 口语名, 共鸣吐槽] ─────────────────
+   如需修改人格名称，直接编辑对应行的第二、三个字符串。
+*/
+const ARCHETYPE={
+  info:{
+    digital:['THE DIGITAL NOMAD',    '脑子永远在线型',         '关掉一个推送需要三秒，关不掉的焦虑需要更久'],
+    sensory:['THE QUIET SEEKER',     '想找个地方发呆型',       '不是不够努力，是信息太吵了，耳朵想休假'],
+    focus:  ['THE MULTI-TASKER',     '同时干八件事型',         '每件事都开始了，每件事都没完成，完美'],
+  },
+  compare:{
+    block:  ['THE BOUNDARY KEEPER',  '别人的生活关我什么事型', '说不在乎，但朋友圈还是看了三遍'],
+    accept: ['THE SELF-NURTURER',    '跟自己较劲型',           '最严格的评委永远在自己脑子里'],
+    niche:  ['THE VIBE FINDER',      '混进错误圈子型',         '明明格格不入还在努力合群，累不累'],
+  },
+  identity:{
+    goal:   ['THE PATHFINDER',       '目标太多从哪开始型',     '看别人的规划表脑子空白，看自己的更空白'],
+    unlabel:['THE LABEL REMOVER',    '"我不应该这样"型',       '脑子里住了一个永远不满意的家长'],
+    relax:  ['THE SLOW BLOOMER',     '给自己太大压力型',       '躺着都觉得自己在浪费时间，卷王本王'],
+  },
+  lonely:{
+    offline:['THE CONNECTION SEEKER','群里@所有人但找不到人说话型','500人群消息不断，真正想聊天的联系人是0'],
+    alone:  ['THE INNER HERMIT',     '手机是最好的朋友型',     '拿起手机不是因为无聊，是怕太安静'],
+    simplify:['THE MINIMALIST',      '朋友很多但没一个懂我型', '认识的人越来越多，真正的朋友越来越少'],
+  },
+};
+
+const RESULT_TEXTS={
+  info:{
+    digital:'你总被手机碎片信息缠绕，刷短视频、看推送停不下来，赶作业、做事总被弹窗打断，专注力越来越差。其实不用苛责自己，核心是学会筛选信息。建议先卸载3个不常用的娱乐APP，关掉购物、资讯类非必要推送，每天固定1小时"无手机时间"。每天少刷10分钟，坚持一周，就能明显感觉到专注力提升。',
+    sensory:'你每天被课程群、社交动态、各类资讯包围，看完总觉得头脑发沉、心烦意乱，连专注做一件小事都难。这不是你不够自律，是过量信息消耗了你的精力。每天留10分钟：放下手机，找个安静的角落坐下，闭眼深呼吸，只感受自己的呼吸。坚持下来，能快速缓解疲惫。',
+    focus:  '你总想着同时做好几件事，到最后不仅一事无成，还身心俱疲。人的精力有限，多线并行只会分散注意力。建议用番茄钟规划时间，每次只专注一件事——专注25分钟，休息5分钟再回消息。慢慢养成习惯，你会发现做事效率变高。',
+  },
+  compare:{
+    block:  '你刷社交软件时，总会不自觉对比，越比越觉得自己普通。建议先把那些总让你产生落差的账号暂时屏蔽，把目光拉回自己的生活，每天做好一件小事。慢慢积累，你会发现自己也在进步，不用靠对比证明自己。',
+    accept: '你总用别人的标准衡量自己，越比越觉得自己不够好。不用刻意和别人比，每天花2分钟想想自己当天做好的一件小事，学会肯定自己。接纳自己的不完美，做好自己，就是最好的状态。',
+    niche:  '你总害怕不合群，刻意迎合别人，勉强自己融入不属于自己的圈子，最后不仅疲惫，还会陷入内耗。放下"必须合群"的执念，多去接触自己感兴趣的事，慢慢就能遇到三观相合的人。',
+  },
+  identity:{
+    goal:   '你面对方向选择很迷茫，看到身边人有明确目标，就害怕自己落后，越想越内耗。迷茫不可怕，关键是把模糊的大目标拆小——本周了解3个相关岗位、下周投5份简历。一步一步推进，你会逐渐找到自己的方向。',
+    unlabel:'你总被"必须优秀""不能落后"的标签绑着，长期紧绷着，甚至因为暂时不够好自我否定。"优秀"没有统一标准，不用活在别人的期待里。允许自己暂时落后，允许自己有迷茫的时候，按自己的节奏来就好。',
+    relax:  '你总过度苛责自己，哪怕努力了也不满足，长期紧绷神经，慢慢变得疲惫不堪。成长不是冲刺，不用一直逼自己。每天给自己留一点松弛时间，允许自己"偷懒"，接纳自己的不完美。',
+  },
+  lonely:{
+    offline:'你手机里有很多好友，但真正难过时，却找不到一个能线下见面谈心的人，越刷手机越孤单。每周约1个熟悉的朋友，线下喝杯奶茶、逛个公园，简单聊聊就好。慢慢建立真实的情感联结，就能感受到真实的温暖。',
+    alone:  '你害怕独处，总用手机填补空虚，可越刷越孤单，陷入恶性循环。独处不是孤独，是和自己相处的机会。每天留30分钟独处时间，放下手机，做一件简单的小事，比如整理书桌、煮一杯热饮。',
+    simplify:'你有很多线上好友，但这些社交都是表面的，没有真正的情感联结，你依然孤单。社交的意义不在于数量，而在于质量。把精力放在3-5个真心待你的人身上，比拥有一大堆表面好友更能治愈孤独。',
+  },
+};
+
+/* ── 换装服装（12张）
+   图片命名规则：
+     info-1.jpg / info-2.jpg / info-3.jpg
+     compare-1.jpg / compare-2.jpg / compare-3.jpg
+     identity-1.jpg / identity-2.jpg / identity-3.jpg
+     lonely-1.jpg / lonely-2.jpg / lonely-3.jpg
+   remedy 字段对应 REMEDIES 中的 key，决定哪张是"命运之卡"
+*/
+/* ── 困境服装（4张）
+   图片命名：distress-info.jpg / distress-compare.jpg / distress-identity.jpg / distress-lonely.jpg
+*/
+const DISTRESS_GARMENTS={
+  info:     {name:'信息浪潮', img:'images/distress-info.jpg',
+             styling:'Y3K 风格——银灰镜面面料折射信息洪流，层叠的机能结构暗示过载的感官，金属链甲配饰如同缠绕不断的信号干扰。'},
+  compare:  {name:'镜中迷途', img:'images/distress-compare.jpg',
+             styling:'Y3K 风格——牛仔与镜面材质的碰撞，复古做旧与未来感并置，像在无数比较中找不到自己真实倒影的迷失感。'},
+  identity: {name:'漂浮自我', img:'images/distress-identity.jpg',
+             styling:'Y3K 风格——扎染色彩的流动与阔腿裤的松散，像身份焦虑时那种被不同期待拉扯、找不到边界的飘浮状态。'},
+  lonely:   {name:'数字空洞', img:'images/distress-lonely.jpg',
+             styling:'Y3K 风格——丝绒的柔软与机能拖鞋的冷硬，慵懒中藏着疏离，像数字孤独那种明明很舒适却又很空洞的状态。'},
+};
+
+const GARMENTS={
+  info:[
+    {id:'inf1',name:'断舍离镜面套装', img:'images/info-1.jpg', remedy:'digital',
+     styling:'银色镜面短款露脐上衣+黑色低腰机能工装裤，透明厚底机甲靴，金属链甲配饰与荧光串珠手链。',
+     desc:'银色镜面面料是一种态度——只反射真正重要的东西，其余的过滤掉。机能工装裤的利落剪裁告诉你，精简不是损失，是清醒。'},
+    {id:'inf2',name:'感官放空赛博套', img:'images/info-2.jpg', remedy:'sensory',
+     styling:'亮粉色挺廓短款机能夹克+同色系拼接金属孔眼喇叭裤，银色厚底未来感运动鞋，点缀黑心涂鸦与硬核金属绑带装饰',
+     desc:'高饱和粉色是意识的“降噪开关”。挺廓线条如电子盔甲阻绝乱码，让感官在极度张力中获得瞬间的静谧与放空'},
+    {id:'inf3',name:'专注茧形机能套', img:'images/info-3.jpg', remedy:'focus',
+     styling:'黑色修身短款机能卫衣+灰色束脚工装裤，黑色厚底老爹靴，荧光色立体织带与简约金属鸭舌帽。',
+     desc:'机能面料的密度和束脚的收束感，给你一个清晰的身体边界——就像番茄钟划出时间边界一样，告诉你：现在只做这一件事。'},
+  ],
+  compare:[
+    {id:'cmp1',name:'复古边界牛仔套', img:'images/compare-1.jpg', remedy:'block',
+     styling:'做旧牛仔短款露脐外套+白色镜面抹胸内搭+蓝色低腰牛仔短裤，彩色拼接机能长袜与厚底帆布鞋，复古金属徽章与夸张几何耳环。',
+     desc:'做旧牛仔里藏着不在乎潮流的底气，镜面抹胸是给自己看的，不是给别人看的。复古与未来感的碰撞说明：你不需要选边站。'},
+    {id:'cmp2',name:'亮面自信吊带套', img:'images/compare-2.jpg', remedy:'accept',
+     styling:'淡紫色亮面吊带裙+白色短款机能防晒开衫，银色厚底凉鞋，碎钻发箍与金属珍珠手链。',
+     desc:'亮面面料把光留在自己身上——不是炫耀，是把注意力收回来。换上它，你会发现不需要跟任何人比，因为你自己就足够发光。'},
+    {id:'cmp3',name:'小众机能黑套装', img:'images/compare-3.jpg', remedy:'niche',
+     styling:'黑色机能风短款外套+黑色工装短裙，黑色厚底马丁靴，金属铆钉与荧光色立体挂饰。',
+     desc:'全黑机能是一种筛选——不是每个人都能读懂这套搭配，但懂的人会立刻懂你。这件衣服吸引同频的人，过滤掉不需要合群的场合。'},
+  ],
+  identity:[
+    {id:'idt1',name:'活力铆钉丹宁套', img:'images/identity-1.jpg', remedy:'goal',
+     styling:'薰衣草紫罗纹修身背心 + 炭灰色做旧微喇牛仔裤，搭配黑色宽版铆钉皮质腰带与醒目金属搭扣',
+     desc:'宽阔的腰带是理性的边界，将庞杂的焦虑收拢成具体的着力点。裤脚的微喇弧度像是延伸的路径，把宏大的目标拆解成脚下的每一步，在确定的包裹感中找回身份的支点。'},
+    {id:'idt2',name:'混搭随心自在套', img:'images/identity-2.jpg', remedy:'unlabel',
+     styling:'蓝灰色皮夹克内搭字母背心，豹纹短裤碰撞蝴蝶结连裤袜，配以白色运动鞋与莓果粉挎包',
+     desc:'硬朗皮革、狂野豹纹与甜美蝴蝶结的元素错位，完成了对外界标签的解构。不被单一语境定义，我只是所有矛盾与可能性的总和。'},
+    {id:'idt3',name:'松弛轻盈呼吸套', img:'images/identity-3.jpg', remedy:'relax',
+     styling:'黑色修身无袖高领针织衫搭配浅咖色超大廓形垂坠阔腿裤，肩背极简米白色帆布托特包。',
+     desc:'下半身极度舒展的垂坠褶皱是给焦虑的留白——不再紧绷地追求社会定义，而是允许自己在宽阔的空间里松弛生长。 这种量感带来的稳定感，让每一步前行都更笃定自然。'},
+  ],
+  lonely:[
+    {id:'lon1',name:'元气泡泡袖甜套', img:'images/lonely-1.jpg', remedy:'offline',
+     styling:'粉色半透明亮面蓬蓬连衣裙内搭人像印花，搭配粉色亮片厚底玛丽珍鞋，点缀黑色皮革腿环、蝴蝶结发箍与金属链条方包',
+     desc:'半透明的亮面材质如同数字世界与现实的破冰窗口，在轻盈的粉色中释放出欢迎信号。夸张的人像印花是线下相遇的视觉开场白，让目光在流动的美学中交汇，开启一场无负担的真实对话。'},
+    {id:'lon2',name:'针织慵懒独处套', img:'images/lonely-2.jpg', remedy:'alone',
+     styling:'蓝白相间条纹长袖居家服T恤加长裤，搭配白色毛绒人字拖',
+     desc:'柔软、包裹感极强的针织面料提供了最直接的身体慰藉，阻隔了外界的数字噪音。居家服的私密性是对"不需营业"的承诺，而脚下柔软的毛绒拖鞋则是每一次独处时最真实的治愈感。'},
+    {id:'lon3',name:'迷彩墨镜精简套', img:'images/lonely-3.jpg', remedy:'simplify',
+     styling:'军绿迷彩一字肩拉链短上衣+黑色皮革束腰结构，迷彩低腰工装超短裙配配套宽腰带，脚踩黑色厚底多口袋机能靴，佩戴黑色窄框太阳镜',
+     desc:'迷彩是保护色，窄框墨镜是屏障，皮革束腰则是清晰的物理边界——这些硬朗的机能元素共同构筑了一座拒绝泛滥社交的堡垒。不需要复杂的装饰去迎合，只需用最直白、确定的廓形宣示：我的领地，只向极少数人开放。'},
+  ],
+};
+
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let S={
+  name:'', answers:{}, distress:null, remedy:null,
+  quizDone:false, drawDone:false, currentQ:0,
+  selectedFanIdx:null, confirmed:false, _fatedIdx:0, _selectedGIdx:0,
+};
+
+/* ══════════════════════════════════════
+   MODAL
+══════════════════════════════════════ */
+function openOnboard(){
+  document.getElementById('onboard-modal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('user-name').focus(),100);
+}
+function closeOnboard(){
+  document.getElementById('onboard-modal').classList.add('hidden');
+}
+document.getElementById('onboard-modal').addEventListener('click',function(e){
+  if(e.target===this) closeOnboard();
+});
+document.getElementById('user-name').addEventListener('keydown',function(e){
+  if(e.key==='Enter') startQuiz();
+});
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+function goSection(name){
+  ['hero','quiz','draw','summary'].forEach(s=>{
+    document.getElementById('sec-'+s).classList.remove('active');
+    const b=document.getElementById('nav-'+s);
+    if(b) b.classList.remove('active');
+  });
+  document.getElementById('sec-'+name).classList.add('active');
+  const nb=document.getElementById('nav-'+name);
+  if(nb) nb.classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  // restore quiz section state when navigating back to it
+  if(name==='quiz'){
+    const locked=document.getElementById('quiz-locked');
+    const qstep=document.getElementById('quiz-step');
+    const rstep=document.getElementById('result-step');
+    if(S.quizDone){
+      if(locked) locked.style.display='none';
+      if(qstep)  qstep.style.display='none';
+      if(rstep)  rstep.style.display='block';
+    } else if(S.name){
+      if(locked) locked.style.display='none';
+      if(qstep)  qstep.style.display='block';
+      if(rstep)  rstep.style.display='none';
+    } else {
+      // not started yet — show locked
+      if(locked) locked.style.display='flex';
+      if(qstep)  qstep.style.display='none';
+      if(rstep)  rstep.style.display='none';
+    }
+  }
+  if(name==='draw')    renderDraw();
+  if(name==='summary') renderSummary();
+}
+
+/* ══════════════════════════════════════
+   SECTION 01: QUIZ
+══════════════════════════════════════ */
+function startQuiz(){
+  const name=document.getElementById('user-name').value.trim();
+  if(!name){toast('先告诉我你的名字 ✦');return;}
+  S.name=name;
+  closeOnboard();
+  goSection('quiz');
+  document.getElementById('quiz-locked').style.display='none';
+  document.getElementById('quiz-step').style.display='block';
+  S.currentQ=0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q=QUESTIONS[S.currentQ];
+  const pct=((S.currentQ+1)/15*100).toFixed(2);
+  document.getElementById('q-current').textContent=S.currentQ+1;
+  document.getElementById('q-bar').style.width=pct+'%';
+  const sel=S.answers[q.id]||0;
+  document.getElementById('question-area').innerHTML=`
+    <div class="question-card">
+      <p class="question-num">QUESTION ${String(q.id).padStart(2,'0')} / 15</p>
+      <p class="question-text">${q.text}</p>
+      <div class="options-grid">
+        ${q.opts.map((opt,i)=>{
+          const score=4-i;
+          return `<button class="option-btn ${sel===score?'selected':''}" onclick="selectOption(${score})">
+            <span class="opt-letter">${['A','B','C','D'][i]}</span><span>${opt}</span></button>`;
+        }).join('')}
+      </div>
+      <div class="quiz-nav">
+        <button class="btn-ghost" onclick="prevQ()" ${S.currentQ===0?'disabled':''}>← 上一题</button>
+        <button class="btn-dream" onclick="nextQ()" ${!sel?'disabled':''}>
+          ${S.currentQ===14?'看看你需要什么 →':'下一题 →'}</button>
+      </div>
+    </div>`;
+}
+function selectOption(score){S.answers[QUESTIONS[S.currentQ].id]=score;renderQuestion();}
+function prevQ(){if(S.currentQ>0){S.currentQ--;renderQuestion();}}
+function nextQ(){
+  if(!S.answers[QUESTIONS[S.currentQ].id]){toast('请先选择一个选项');return;}
+  if(S.currentQ<14){S.currentQ++;renderQuestion();}else{computeResult();}
+}
+
+function computeResult(){
+  const scores={info:0,compare:0,identity:0,lonely:0};
+  QUESTIONS.forEach(q=>{scores[q.dim]+=(S.answers[q.id]||1);});
+  const priority=['lonely','info','compare','identity'];
+  let maxVal=0;
+  priority.forEach(d=>{if(scores[d]>maxVal){maxVal=scores[d];S.distress=d;}});
+  const remMap={
+    info:    {p:[1,13],s1:5,s2:9},
+    compare: {p:[2,14],s1:6,s2:10},
+    identity:{p:[3,15],s1:7,s2:11},
+    lonely:  {p:[4],   s1:8,s2:12},
+  };
+  const rm=remMap[S.distress];
+  const pScore=rm.p.reduce((a,id)=>a+(S.answers[id]||1),0);
+  const s1=S.answers[rm.s1]||1, s2=S.answers[rm.s2]||1;
+  const ri=pScore>=(rm.p.length===2?6:3)?0:s1>=s2?1:2;
+  S.remedy=REMEDIES[S.distress][ri].key;
+  S.quizDone=true;
+  showResult();
+}
+
+/* showResult: two-column — persona text left, distress garment full-height right */
+function showResult(){
+  const d=S.distress, r=S.remedy;
+  const rem=REMEDIES[d].find(x=>x.key===r);
+  const arch=ARCHETYPE[d][r];
+  const col=DIM_COLOR[d];
+  const dG=DISTRESS_GARMENTS[d];
+
+  document.getElementById('quiz-step').style.display='none';
+  document.getElementById('result-step').style.display='block';
+  document.getElementById('result-step').innerHTML=`
+    <div class="result-card">
+      <div class="result-card-inner">
+        <div class="result-card-text">
+          <span class="result-tag">你现在穿着的 · CURRENTLY WEARING</span>
+          <h3 class="result-type">${S.name}，<em>你是</em></h3>
+          <p class="result-type" style="font-size:1.85rem;margin-top:.1rem">${arch[1]}</p>
+          <p style="font-family:var(--mono);font-size:.54rem;opacity:.4;letter-spacing:.2em;margin-top:.4rem">${arch[0]}</p>
+          <p style="font-size:.93rem;color:rgba(245,240,232,.6);line-height:1.7">${arch[2]}</p>
+          <div style="margin-top:.5rem">
+            <span class="dim-badge ${DIM_TAG[d]}">${DIM_NAMES[d]}</span>
+          </div>
+          <div class="result-divider"></div>
+          <p style="font-size:.9rem;line-height:1.95;color:rgba(245,240,232,.73);flex:1">${RESULT_TEXTS[d][r]}</p>
+          <div style="margin-top:1.6rem;display:flex;gap:1rem;flex-wrap:wrap">
+            <button class="btn-dream" onclick="goSection('draw')">找到那件衣服 →</button>
+            <button class="btn-ghost" onclick="resetQuiz()">重新开始</button>
+          </div>
+        </div>
+        <div class="result-garment-panel">
+          <div class="result-garment-ring"></div>
+          <img src="${dG.img}" alt="${dG.name}"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="result-garment-panel-fallback" style="display:none">
+            <svg width="56" height="74" viewBox="0 0 56 74" fill="none" opacity=".4">
+              <path d="M7 18L19 10H37L49 18V66H7V18Z" stroke="${col.fg}" stroke-width="1" fill="none"/>
+              <path d="M19 10C19 10 22 22 28 22C34 22 37 10 37 10" stroke="${col.fg}" stroke-width="1" fill="none"/>
+            </svg>
+            <p style="font-family:var(--mono);font-size:.55rem;letter-spacing:.15em;color:${col.fg}">${dG.name}</p>
+          </div>
+          <div class="result-garment-overlay"></div>
+          <div class="result-garment-label">
+            <p style="font-family:var(--serif);font-size:1.15rem;color:var(--pale)">${dG.name}</p>
+            <p style="font-family:var(--mono);font-size:.54rem;letter-spacing:.15em;color:${col.fg};margin-top:.2rem">${DIM_NAMES[d]}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function resetQuiz(){
+  S={name:'',answers:{},distress:null,remedy:null,quizDone:false,drawDone:false,currentQ:0,selectedFanIdx:null,confirmed:false,_fatedIdx:0,_selectedGIdx:0};
+  document.getElementById('quiz-step').style.display='none';
+  document.getElementById('result-step').style.display='none';
+  document.getElementById('quiz-locked').style.display='flex';
+  document.getElementById('user-name').value='';
+  goSection('hero');
+}
+
+/* ══════════════════════════════════════
+   SECTION 02: DRAW
+══════════════════════════════════════ */
+function renderDraw(){
+  const el=document.getElementById('draw-content');
+  if(!S.quizDone) return;
+  if(S.confirmed){showFlippedResult();return;}
+
+  const fatedIdx=GARMENTS[S.distress].findIndex(g=>g.remedy===S.remedy);
+  S._fatedIdx=fatedIdx<0?0:fatedIdx;
+
+  const TOTAL=15, realPositions=[4,7,11];
+  const totalSpan=164, startAngle=-totalSpan/2, step=totalSpan/(TOTAL-1);
+  let cards=[],realIdx=0;
+  for(let i=0;i<TOTAL;i++){
+    const angle=startAngle+i*step;
+    const isReal=realPositions.includes(i);
+    const gIdx=isReal?realIdx++:-1;
+    const isFated=isReal&&gIdx===S._fatedIdx;
+    cards.push({i,angle,isReal,gIdx,isFated});
+  }
+
+  el.innerHTML=`
+    <div class="draw-stage-row">
+      <div class="fan-col">
+        <p class="fan-hint">有一张本就是你的 · 凭感觉选一张</p>
+        <div class="fan-stage" id="fan-stage">
+          ${cards.map(c=>`
+            <div class="fan-card ${c.isFated?'fated':''}" id="fc-${c.i}"
+              style="transform:translateX(-50%) rotate(${c.angle}deg);z-index:${c.i};"
+              onclick="fanCardClick(${c.i},${c.isReal},${c.gIdx})">
+              <div class="fan-card-inner">
+                <div class="fan-card-back"><div class="fan-card-back-pattern">✦</div></div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="reveal-col" id="reveal-col">
+        <p style="font-family:var(--mono);font-size:.58rem;letter-spacing:.18em;color:rgba(200,184,212,.4)">你选的这张</p>
+        <div class="reveal-card-wrap" id="reveal-card-wrap">
+          <div class="reveal-card-back">
+            <span style="font-family:var(--serif);font-size:2.5rem;color:rgba(200,184,212,.18)">✦</span>
+          </div>
+        </div>
+        <div class="reveal-btns">
+          <button class="btn-dream" onclick="confirmCard()">就是这张 ✦</button>
+          <button class="btn-ghost"  onclick="clearSelection()">再选一张</button>
+        </div>
+      </div>
+    </div>
+    <div class="draw-result-wrap" id="draw-result"></div>`;
+}
+
+function fanCardClick(pos,isReal,gIdx){
+  if(S.confirmed) return;
+  document.querySelectorAll('.fan-card').forEach(c=>c.classList.remove('selected-preview'));
+  document.getElementById('fc-'+pos).classList.add('selected-preview');
+  S.selectedFanIdx=pos;
+  S._selectedGIdx=isReal?gIdx:S._fatedIdx;
+
+  const g=GARMENTS[S.distress][S._selectedGIdx];
+  const rw=document.getElementById('reveal-card-wrap');
+  rw.innerHTML=`
+    <img src="${g.img}" alt="?" onerror="this.style.display='none'">
+    <div class="reveal-card-back" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+      <span style="font-family:var(--serif);font-size:2.5rem;color:rgba(200,184,212,.18)">✦</span>
+    </div>`;
+  document.getElementById('reveal-col').classList.add('show');
+}
+
+function clearSelection(){
+  S.selectedFanIdx=null;
+  document.querySelectorAll('.fan-card').forEach(c=>c.classList.remove('selected-preview'));
+  document.getElementById('reveal-col').classList.remove('show');
+}
+
+function confirmCard(){
+  if(S.selectedFanIdx===null){toast('请先选一张牌 ✦');return;}
+  S.confirmed=true;
+  document.querySelectorAll('.fan-card:not(.selected-preview)').forEach(c=>{
+    const dir=(Math.random()-.5)*320, dy=Math.random()*220+120;
+    c.style.transition=`transform ${.38+Math.random()*.28}s ease,opacity .38s ease`;
+    c.style.transform=c.style.transform+` translate(${dir}px,${dy}px) scale(.2)`;
+    c.style.opacity='0';c.style.pointerEvents='none';
+  });
+  document.querySelector('.draw-stage-row').style.opacity='0';
+  setTimeout(()=>{
+    document.querySelector('.draw-stage-row').style.display='none';
+    showFlippedResult();
+    callAgentDraw();
+  },550);
+}
+
+function showFlippedResult(){
+  const d=S.distress, r=S.remedy;
+  const ri=GARMENTS[d].findIndex(g=>g.remedy===r);
+  const g=GARMENTS[d][ri>=0?ri:0];
+  const rem=REMEDIES[d].find(x=>x.key===r);
+  const col=DIM_COLOR[d];
+  const arch=ARCHETYPE[d][r];
+
+  const dr=document.getElementById('draw-result');
+  if(!dr) return;
+  dr.className='draw-result-wrap show';
+  dr.innerHTML=`
+    <div class="drawn-card-flip">
+      <div class="drawn-card-flipper" id="card-flipper">
+        <div class="flip-face flip-back-face"><div class="fbf-inner">✦</div></div>
+        <div class="flip-face flip-front-face">
+          <img src="${g.img}" alt="${g.name}"
+               onload="this.nextElementSibling.style.display='none'"
+               onerror="this.style.display='none'">
+          <div class="flip-front-placeholder">
+            <svg width="60" height="78" viewBox="0 0 60 78" fill="none" opacity=".45">
+              <path d="M8 18L20 10H40L52 18V70H8V18Z" stroke="${col.fg}" stroke-width="1" fill="none"/>
+            </svg>
+            <p style="font-family:var(--mono);font-size:.58rem;color:${col.fg}">${g.name}</p>
+          </div>
+          <div class="flip-glow"></div>
+          <div class="flip-label">
+            <p class="fl-name">${g.name}</p>
+            <p class="fl-type" style="color:${col.fg}">${rem.name}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="agent-box" id="agent-draw" style="margin-top:0">
+        <p class="agent-label">为什么是这件 · WHY THIS ONE</p>
+        <p class="agent-text loading">解读中<span class="dots"></span></p>
+      </div>
+      <p style="font-family:var(--serif);font-size:.82rem;font-style:italic;color:rgba(200,184,212,.35);margin-top:.8rem;line-height:1.8">${g.styling}</p>
+      <div style="margin-top:1.5rem;text-align:right">
+        <button class="btn-dream" onclick="goSection('summary')">看看它在等你说什么 →</button>
+      </div>
+    </div>`;
+
+  setTimeout(()=>{
+    const flipper=document.getElementById('card-flipper');
+    if(flipper) flipper.classList.add('flipped');
+    S.drawDone=true;
+  },300);
+}
+
+/* ── AGENT PROMPT: 为什么是这件 ─────────────────────────────
+   如需修改，直接编辑下方 template string。
+*/
+function callAgentDraw(){
+  const d=S.distress, r=S.remedy;
+  const ri=GARMENTS[d].findIndex(g=>g.remedy===r);
+  const g=GARMENTS[d][ri>=0?ri:0];
+  const rem=REMEDIES[d].find(x=>x.key===r);
+  const arch=ARCHETYPE[d][r];
+  callAgent('agent-draw',
+    `「${S.name}」找到了「${g.name}」这件衣服。
+人格类型：${arch[1]}，需要的方向：${rem.name}
+服装造型：${g.styling}
+服装特点：${g.desc}
+
+请用150字以内，解释为什么这件衣服是「${S.name}」现在需要的那件：
+1. 从造型的1-2个具体细节出发（面料/颜色/配件），说清楚它和「${S.name}」当下状态之间的关系——不是巧合，是因为什么
+2. 穿上它的时候，身体会有什么不同的感受？这种感受和「${rem.name}」有什么关系？
+3. 最后一句：用一句话说出为什么这件衣服本来就属于「${S.name}」
+聚焦服装本身，语言直白有画面感，不说教。`
+  );
+}
+
+/* ══════════════════════════════════════
+   SECTION 03: SUMMARY
+══════════════════════════════════════ */
+function renderSummary(){
+  const el=document.getElementById('summary-content');
+  if(!S.quizDone) return;
+  const d=S.distress, r=S.remedy;
+  const col=DIM_COLOR[d];
+  const rem=REMEDIES[d].find(x=>x.key===r);
+  const arch=ARCHETYPE[d][r];
+  const ri=GARMENTS[d].findIndex(g=>g.remedy===r);
+  const g=GARMENTS[d][ri>=0?ri:0];
+  const dG=DISTRESS_GARMENTS[d];
+
+  el.innerHTML=`
+    <div class="summary-main">
+      <!-- left: letter -->
+      <div>
+        <div class="final-letter">
+          <p class="letter-heading">找到了，写给 ${S.name}</p>
+          <div class="letter-body" id="letter-body"><span class="typewriter-cursor"></span></div>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem">
+          <button class="btn-dream" onclick="shareJourney()">分享我找到的那件 ✦</button>
+          <button class="btn-ghost"  onclick="resetQuiz()">重新开始</button>
+        </div>
+      </div>
+
+      <!-- right: two large overlapping garment cards -->
+      <div class="summary-card-col">
+        <div class="summary-cards-scene">
+          <!-- distress card: top, slight right tilt -->
+          <div class="sum-card sum-card-distress">
+            <img src="${dG.img}" alt="${dG.name}"
+                 onload="this.nextElementSibling.style.display='none'"
+                 onerror="this.style.display='none'">
+            <div class="sum-card-fallback">
+              <svg width="50" height="66" viewBox="0 0 50 66" fill="none" opacity=".35">
+                <path d="M6 16L17 9H33L44 16V60H6V16Z" stroke="${col.fg}" stroke-width="1" fill="none"/>
+                <path d="M17 9C17 9 20 20 25 20C30 20 33 9 33 9" stroke="${col.fg}" stroke-width="1" fill="none"/>
+              </svg>
+            </div>
+            <div class="sum-card-glow"></div>
+            <div class="sum-card-label">
+              <p class="scl-name">${dG.name}</p>
+              <p class="scl-sub" style="color:${col.fg}">脱下的 · ${DIM_NAMES[d]}</p>
+            </div>
+          </div>
+
+          <!-- heal card: bottom, slight left tilt, corner overlap only -->
+          <div class="sum-card sum-card-heal">
+            <img src="${g.img}" alt="${g.name}"
+                 onload="this.nextElementSibling.style.display='none'"
+                 onerror="this.style.display='none'">
+            <div class="sum-card-fallback">
+              <svg width="50" height="66" viewBox="0 0 50 66" fill="none" opacity=".35">
+                <path d="M6 16L17 9H33L44 16V60H6V16Z" stroke="var(--blush)" stroke-width="1" fill="none"/>
+                <path d="M17 9C17 9 20 20 25 20C30 20 33 9 33 9" stroke="var(--blush)" stroke-width="1" fill="none"/>
+              </svg>
+            </div>
+            <div class="sum-card-glow"></div>
+            <div class="sum-card-label">
+              <p class="scl-name">${g.name}</p>
+              <p class="scl-sub" style="color:var(--blush)">换上的 · ${rem.name}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  callAgentLetter();
+}
+
+/* ── AGENT PROMPT: 找到了，写给你的信 ───────────────────────
+   如需修改，直接编辑下方 template string。
+   变量说明：
+     ${S.name}    — 用户姓名
+     ${arch[1]}   — 口语化人格名
+     ${arch[2]}   — 共鸣吐槽
+     ${g.name}    — 找到的服装名
+     ${g.styling} — 服装造型描述
+     ${g.desc}    — 服装情绪联结描述
+     ${rem.name}  — 需要的方向
+     ${rem.desc}  — 方向描述
+*/
+function callAgentLetter(){
+  const d=S.distress, r=S.remedy;
+  const rem=REMEDIES[d].find(x=>x.key===r);
+  const ri=GARMENTS[d].findIndex(g=>g.remedy===r);
+  const g=GARMENTS[d][ri>=0?ri:0];
+  const arch=ARCHETYPE[d][r];
+
+  callAgent('__letter__',
+    `以"梦境衣橱"的名义，给「${S.name}」写一封信，200字左右。
+
+背景：「${S.name}」是「${arch[1]}」，找到了属于他/她的那件衣服「${g.name}」。
+共鸣：${arch[2]}
+找到的衣服「${g.name}」造型：${g.styling}
+这件衣服的特点：${g.desc}
+对应方向：${rem.name}——${rem.desc}
+
+写信要求：
+1. 开头：亲爱的${S.name}，
+2. 第一段：用「${arch[1]}」这种状态最典型的一个具体时刻，说出「${S.name}」最近的真实感受，让他/她读了觉得"对，说的就是我"
+3. 第二段：解释为什么「${g.name}」这件衣服是专门为「${S.name}」现在这个时刻存在的——用衣服的1-2个具体造型细节说清楚，不是泛泛比喻
+4. 第三段：给一个今天就能做的事，用"今天可以试试……"开头，和「${rem.name}」相关，越具体越好
+5. 结尾：一句真实的话，不是口号，是你真心想说的
+6. 落款：梦境衣橱
+
+口语化，像真人写的，聚焦服装和感受的联结，不用"愿你""祝你"这类套话。`
+  );
+}
+
+/* ══════════════════════════════════════
+   AGENT CALL
+══════════════════════════════════════ */
+async function callAgent(boxId,prompt){
+  try{
+    const res=await fetch('/api/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt})
+    });
+    if(!res.ok) throw new Error(res.status);
+    const {text}=await res.json();
+    if(boxId==='__letter__'){
+      typewriterEffect('letter-body',text);
+    } else {
+      const box=document.getElementById(boxId);
+      if(box){
+        const label=box.querySelector('.agent-label')?.outerHTML||'';
+        box.innerHTML=label+`<p class="agent-text">${text}</p>`;
+      }
+    }
+  }catch(e){
+    const fallback='<p style="font-family:var(--mono);font-size:.6rem;color:rgba(200,184,212,.28);letter-spacing:.08em">（需启动后端服务 · npm start）</p>';
+    if(boxId==='__letter__'){
+      const lb=document.getElementById('letter-body');
+      if(lb) lb.innerHTML=fallback;
+    } else {
+      const box=document.getElementById(boxId);
+      if(box){const l=box.querySelector('.agent-label')?.outerHTML||'';box.innerHTML=l+fallback;}
+    }
+  }
+}
+
+/* ══════════════════════════════════════
+   TYPEWRITER
+══════════════════════════════════════ */
+function typewriterEffect(containerId,text){
+  const el=document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML='<span class="typewriter-cursor"></span>';
+  const lines=text.split('\n');
+  let ci=0,li=0,full='';
+  function type(){
+    if(li>=lines.length){
+      const cur=el.querySelector('.typewriter-cursor');
+      if(cur) cur.remove();
+      return;
+    }
+    const line=lines[li];
+    if(ci<line.length){
+      full+=line[ci++];
+      el.innerHTML=full.replace(/\n/g,'<br>')+'<span class="typewriter-cursor"></span>';
+      setTimeout(type,26);
+    } else {full+='\n';li++;ci=0;setTimeout(type,55);}
+  }
+  setTimeout(type,200);
+}
+
+/* ══════════════════════════════════════
+   UTILS
+══════════════════════════════════════ */
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+function shareJourney(){
+  const url=window.location.href;
+  if(navigator.share){navigator.share({title:'梦境衣橱',text:`${S.name}找到了那件属于自己的衣服`,url});}
+  else{navigator.clipboard?.writeText(url).then(()=>toast('链接已复制，快去分享吧 ✦'));}
+}
+
+goSection('hero');
+</script>
+</body>
+</html>
