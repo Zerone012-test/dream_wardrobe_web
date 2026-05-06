@@ -51,10 +51,10 @@ app.post('/api/chat', async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) return res.status(400).json({ error: '缺少 prompt 参数' });
 
-  //const apiKey = process.env.DEEPSEEK_API_KEY;
-  //if (!apiKey || apiKey.startsWith('sk-xxx')) {
-  //  return res.status(500).json({ error: '请在 .env 中配置有效的 DEEPSEEK_API_KEY' });
-  //}
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: '请在 Railway 环境变量中配置 DEEPSEEK_API_KEY' });
+  }
 
   try {
     const response = await fetch(DEEPSEEK_API_URL, {
