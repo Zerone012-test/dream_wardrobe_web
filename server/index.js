@@ -1,12 +1,3 @@
-/**
- * 梦境衣橱 · 后端服务
- * Node.js + Express
- *
- * 职责：
- *  1. 托管前端静态文件（public/）
- *  2. 代理 DeepSeek API 请求（保护 API Key 不暴露到前端）
- */
-
 const express = require('express');
 const fetch   = require('node-fetch');
 const cors    = require('cors');
@@ -15,14 +6,9 @@ const path    = require('path');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-const DEEPSEEK_API_URL = 'https://api.deepseek.com/chat/completions';
-const DEEPSEEK_MODEL   = 'deepseek-chat';  // 切换 R1 改为 'deepseek-reasoner'
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
+const DEEPSEEK_MODEL   = 'deepseek-chat';
 
-/* ── System Prompt ──────────────────────────────────────────────
-   风格基调：专业直白 + 接地气 + 温暖
-   核心世界观：情绪像衣服一样穿在身上，困境是可以脱下的，换一件才是重点
-   所有 agent 文案都围绕"服装×情绪"的具体联结展开
-*/
 const SYSTEM_PROMPT = `你是"梦境衣橱"的情绪换装顾问，懂时尚，也懂心理。
 
 【世界观】
@@ -46,22 +32,30 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
+// 启动时检查
+const apiKey = process.env.DEEPSEEK_API_KEY;
+console.log('=== 启动检查 ===');
+console.log('DEEPSEEK_API_KEY:', apiKey ? `✅ 已读到（前4位：${apiKey.slice(0,4)}）` : '❌ 未找到');
+
+fetch('https://api.deepseek.com/v1/chat/completions', { method: 'HEAD' })
+  .then(r => console.log('DeepSeek 连通性：✅ 可以访问，状态码', r.status))
+  .catch(e => console.log('DeepSeek 连通性：❌ 无法访问', e.message));
+
 app.post('/api/chat', async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) return res.status(400).json({ error: '缺少 prompt 参数' });
 
-  const apiKey = process.env.DEEPSEEK_API_KEY;
-  console.log('KEY:', apiKey ? `找到了，前4位=${apiKey.slice(0,4)}` : '没找到');
-  if (!apiKey) {
-    return res.status(500).json({ error: '请在 Railway 环境变量中配置 DEEPSEEK_API_KEY' });
-}
+  const key = process.env.DEEPSEEK_API_KEY;
+  if (!key) {
+    return res.status(500).json({ error: '环境变量 DEEPSEEK_API_KEY 未配置' });
+  }
 
   try {
     const response = await fetch(DEEPSEEK_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${key}`,
       },
       body: JSON.stringify({
         model: DEEPSEEK_MODEL,
@@ -94,8 +88,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-app.listen(PORT,'0.0.0.0', () => {
-  console.log(`\n✦ 梦境衣橱 已启动`);
-  console.log(`  模型：${DEEPSEEK_MODEL}`);
-  console.log(`  本地访问：http://localhost:${PORT}\n`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✦ 梦境衣橱 已启动，端口 ${PORT}`);
 });
