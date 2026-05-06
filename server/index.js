@@ -32,30 +32,18 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../public')));
 
-// 启动时检查
-const apiKey = process.env.DEEPSEEK_API_KEY;
-console.log('=== 启动检查 ===');
-console.log('DEEPSEEK_API_KEY:', apiKey ? `✅ 已读到（前4位：${apiKey.slice(0,4)}）` : '❌ 未找到');
-
-fetch('https://api.deepseek.com/v1/chat/completions', { method: 'HEAD' })
-  .then(r => console.log('DeepSeek 连通性：✅ 可以访问，状态码', r.status))
-  .catch(e => console.log('DeepSeek 连通性：❌ 无法访问', e.message));
-
 app.post('/api/chat', async (req, res) => {
   const { prompt } = req.body;
   if (!prompt) return res.status(400).json({ error: '缺少 prompt 参数' });
 
-  const key = process.env.DEEPSEEK_API_KEY;
-  if (!key) {
-    return res.status(500).json({ error: '环境变量 DEEPSEEK_API_KEY 未配置' });
-  }
+  const apiKey = process.env.DEEPSEEK_API_KEY || 'sk-ca19241aefa4410eb78a7f7a73d89166';
 
   try {
     const response = await fetch(DEEPSEEK_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${key}`,
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: DEEPSEEK_MODEL,
