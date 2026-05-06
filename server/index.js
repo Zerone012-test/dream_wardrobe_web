@@ -7,7 +7,6 @@
  *  2. 代理 DeepSeek API 请求（保护 API Key 不暴露到前端）
  */
 
-require('dotenv').config();
 const express = require('express');
 const fetch   = require('node-fetch');
 const cors    = require('cors');
