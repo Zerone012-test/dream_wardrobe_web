@@ -53,7 +53,7 @@ app.post('/api/chat', async (req, res) => {
 
   //const apiKey = process.env.DEEPSEEK_API_KEY;
   //if (!apiKey || apiKey.startsWith('sk-xxx')) {
-  //return res.status(500).json({ error: '请在 .env 中配置有效的 DEEPSEEK_API_KEY' });
+  //  return res.status(500).json({ error: '请在 .env 中配置有效的 DEEPSEEK_API_KEY' });
   //}
 
   try {
